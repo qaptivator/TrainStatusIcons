@@ -11,7 +11,7 @@ data:extend({
 		name = "no-path-blinking",
 		filename = "__TrainStatusIcons__/graphics/no-path-blinking.png",
 		size = 78, -- total 156w 78h
-		animation_speed = 0.02,
+		animation_speed = 0.01,
 		frame_count = 2,
 		scale = 0.4,
 	},

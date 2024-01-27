@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.1.1
+  Tweaks:
+    - Changed the animation of No path alert blinking to match the rest of the alerts.
+    - Hidden the No path and Destination full text.
+---------------------------------------------------------------------------------------------------
 Version: 0.1.0
   Major features:
     - Initial release.
