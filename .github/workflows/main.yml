@@ -1,0 +1,39 @@
+name: Update Badge
+
+on:
+  schedule:
+    - cron: '0 * * * *' # Run every hour
+  workflow_dispatch:
+
+jobs:
+  update-badge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fetch webpage and update badge data
+        run: |
+          curl https://mods.factorio.com/mod/TrainStatusIcons > page.html
+          npm install cheerio
+          node -e "
+            const fs = require('fs');
+            const cheerio = require('cheerio');
+            const html = fs.readFileSync('page.html', 'utf8');
+            const $ = cheerio.load(html);
+            const data = $('body > div.container > div > div.panel.pt0.pb0.mb32 > div.panel-inset-lighter.flex-column.p0 > div.flex.z1 > div.panel-inset-lighter.m0.w256.sm-none > div.mod-card-info > div:nth-child(3) > span').text().trim();
+            fs.writeFileSync('badge-data.txt', data);
+          "
+
+      - name: Commit files
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add badge-data.txt
+          git commit -m "Update badge data"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
