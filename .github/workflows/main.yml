@@ -22,7 +22,7 @@ jobs:
             const html = fs.readFileSync('page.html', 'utf8');
             const html_editor = cheerio.load(html);
             const data = html_editor('body > div.container > div > div.panel.pt0.pb0.mb32 > div.panel-inset-lighter.flex-column.p0 > div.flex.z1 > div.panel-inset-lighter.m0.w256.sm-none > div.mod-card-info > div:nth-child(3) > span').text().trim() || '';
-            fs.writeFileSync('badge-data.txt', data);
+            fs.writeFileSync('badge-data.txt', `downloadCount = data`);
           "
 
       - name: Commit files
