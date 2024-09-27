@@ -25,15 +25,22 @@ jobs:
             fs.writeFileSync('badge-data.txt', 'downloadCount = \"' + data + '\"');
           "
 
-      - name: Commit files
+      - name: Commit and push files
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add badge-data.txt
-          git commit -m "Update badge data"
 
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+          if git diff-index --quiet HEAD --; then
+            echo "No changes detected. Exiting."
+            exit 0
+          fi
+          
+          git commit -m "Update download count"
+          git push
+
+#      - name: Push changes
+#        uses: ad-m/github-push-action@master
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          branch: ${{ github.ref }}
